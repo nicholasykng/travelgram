@@ -8,5 +8,5 @@ u7 = User.create(name: "Cynthia")
 u8 = User.create(name: "Bridgette")
 u9 = User.create(name: "Ken")
 u10 = User.create(name: "Kyle")
-l1 = Location.create(description: "A beautiful scenery", picture: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/artboard-1-1577446249.png?resize=480:*")
-l1.user = u1
+l1 = Location.create(description: "A beautiful scenery", picture: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/artboard-1-1577446249.png?resize=480:*", user_id: 1)
+c1 = Comment.create(content: "Great tip", user_id: 2, location_id: 1)

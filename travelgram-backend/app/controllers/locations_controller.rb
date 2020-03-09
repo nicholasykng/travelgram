@@ -1,7 +1,7 @@
 class LocationsController < ApplicationController
     def index
         locations = Location.all 
-        render json: locations
+        render json: locations, include: [:comments], except: [:created_at, :updated_at]
     end
 
     def show
