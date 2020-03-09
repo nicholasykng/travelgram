@@ -5,12 +5,23 @@ class LocationsController < ApplicationController
     end
 
     def show
+        location = Location.find(params[:id])
+        render json: location, include: [:comments], except: [:created_at, :updated_at]
     end
 
     def create
+        user = User.find(params['location']['user_id'])
+        location = Location.create(location_params)
+        render json: location, include: [:comments], except: [:created_at, :updated_at]
     end
 
     def update
     end
+
+    private
+    def location_params
+        params.permit(:description, :picture)
+    end
+
 
 end
