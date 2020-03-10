@@ -10,7 +10,15 @@ function getLocations() {
         <img src ="${location.picture}"></img>
         </div>
         <p>${location.description}</p>
+        <ul data-ul-id='${location.id}'>
+        </ul>
         </div>`
+        location.comments.forEach(comment => {
+            let dataUlId = document.querySelector(`[data-ul-id='${location.id}']`);
+            const commentHTML = `<li>${comment.content}</li>`;
+            dataUlId.insertAdjacentHTML('beforeend', commentHTML);
+
+        })
     }) 
     )}
 getLocations()
