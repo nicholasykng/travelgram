@@ -16,6 +16,9 @@ class LocationsController < ApplicationController
     end
 
     def update
+        location = Location.find(params[:id])
+        location.update(location_params)
+        render json: location, include: [:comments], except: [:created_at, :updated_at]
     end
 
     private
