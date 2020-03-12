@@ -2,7 +2,23 @@ document.addEventListener("DOMContentLoaded", () => {
     locationBox = document.querySelector('section#location-box')
     Location.newLocationForm();
     getLocations();
+    let locationId;
+    getUser();
 })
+
+function getUser() {
+    fetch('http://localhost:3000/users')
+    .then(resp => resp.json())
+    .then(loginUser)
+}
+
+function loginUser(usersarray) {
+    usersarray.forEach((user) => {
+        let loginUserSelect = document.querySelector('select#login-users');
+        loginUserSelect.innerHTML += `<option value="${user.id}" user-name=${user.name}>${user.name}</option>`
+    })
+}
+
 function getLocations() {
     fetch('http://localhost:3000/locations')
     .then(response => response.json())
@@ -42,25 +58,42 @@ class Location {
     }
     static newLocationForm() {
          let addLocation = document.querySelector('section#add_location')
-         addLocation.innerHTML = `<form onsubmit="createLocation(); return false;">` + locationFormFields
+         addLocation.innerHTML = locationFormFields
     } 
 }
 
+function createButton() {
+    let addLocation = document.querySelector('section#add_location')
+    addLocation.addEventListener('submit', event => {
+        event.preventDefault();
+        createLocation(event.target)
+    })
+}
+
 function createLocation() {
-    const location = {
-        picture: document.getElementById('picture').value,
-        description: document.getElementById("description").value
-    };
-    fetch('http://localhost:3000/locations', {
+
+        fetch("http://localhost:3000/locations", {
         method: "POST",
         headers: {"Content-Type": "application/json", "Accept": "application/json"},
-        body: JSON.stringify(location),
+        body: JSON.stringify({
+            picture: document.getElementById('picture').value,
+            description: document.getElementById("description").value,
+            
+        })
     })
-    .then(response => response.json())
-    .then(location => {
+    .then(resp => resp.json() )
+    .then( (newLocation) => {
         Location.newLocationForm();
         clearLocationHtml();
-        getLocations();
+        locationBox.innerHTML += `
+        <div data-id=${newLocation.id}>
+        <div class="location-pics">
+        <img src ="${newLocation.picture}"></img>
+        </div>
+        <p>${newLocation.description}</p>
+        <ul data-ul-id='${newLocation.id}'>
+        </ul>
+        </div>`
     })
 }
 
